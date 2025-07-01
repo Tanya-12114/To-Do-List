@@ -11,12 +11,52 @@
 <body>
     <div class="container">
         <h1 class="heading">To-Do List &#128221;</h1>
+
+        <!-- Input + Controls -->
         <div class="input-section">
             <input type="text" id="task-input" placeholder="Add a task" />
-            <button id="add-btn">Add</button>
+            <select id="priority">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+            </select>
+            <div class="button-group">
+                <button id="add-btn">Add</button>
+                <button id="clear-btn">Clear</button>
+            </div>
         </div>
-        <ul id="task-list"></ul>
+
+        <!-- Calendar Section -->
+        <div id="calendar-section">
+            <div class="calendar-header">
+                <button id="prev-month">&#8249;</button>
+                <span id="month-year"></span>
+                <button id="next-month">&#8250;</button>
+            </div>
+            <div id="calendar-days" class="calendar-days">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div id="calendar"></div>
+        </div>
+
+        <!-- Task List -->
+        <div id="task-container">
+            <ul id="task-list"></ul>
+        </div>
+
+        <!-- Controls -->
+        <div class="footer-controls">
+            <button id="view-all-btn">View All Tasks</button>
+            <button id="completed-btn">Show Completed Tasks</button>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 
