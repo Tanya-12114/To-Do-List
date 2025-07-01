@@ -1,4 +1,4 @@
-# To-Do List Web App
+# To-Do List Website
 
 A simple, responsive **To-Do List** application built with **HTML, CSS, and JavaScript**. This project allows users to add, complete, and delete tasks with real-time interaction — all in the browser.
 
