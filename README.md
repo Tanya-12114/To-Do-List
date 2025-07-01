@@ -1,8 +1,13 @@
-# To-Do List Website
+# To-Do List
 
 A simple, responsive **To-Do List** application built with **HTML, CSS, and JavaScript**. This project allows users to add, complete, and delete tasks with real-time interaction — all in the browser.
 
 ---
+## Live Website
+
+Click below to view the site:
+
+👉 [https://tanya-12114.github.io/To-Do-List/](https://tanya-12114.github.io/To-Do-List/)
 
 ## Features
 
