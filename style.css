@@ -155,7 +155,7 @@ li.completed .task-text {
 
 .remove-btn {
     background-color: transparent;
-    color: rgb(0, 0, 0);
+    color: rgb(44, 42, 42);
     border: 1px solid #555;
     font-size: 10px;
     width: 16px;
@@ -167,6 +167,7 @@ li.completed .task-text {
     justify-content: center;
     margin-left: 15px;
     transition: background-color 0.3s ease;
+    line-height: 1;
 }
 
 .remove-btn:hover {
