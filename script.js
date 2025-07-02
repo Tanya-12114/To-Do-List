@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextBtn = document.getElementById("next-month");
     let currentDate = new Date();
     let selectedDate = null;
+    let currentView = "none";
 
     // Hide tasks initially
     taskContainer.style.display = "none";
@@ -58,66 +59,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // View tasks
     viewAllBtn.addEventListener("click", function () {
-        if (taskContainer.style.display === "block") {
+        if (currentView === "all") {
             taskContainer.style.display = "none";
+            currentView = "none";
         } else {
             renderTasks();
             taskContainer.style.display = "block";
+            currentView = "all";
         }
     });
+
+    let showingCompleted = false;
+
     completedBtn.addEventListener("click", function () {
-        const completedTasks = allTasks.filter(task => task.completed);
+        if (currentView === "completed") {
+            taskContainer.style.display = "none";
+            currentView = "none";
+        } else {
+            const completedTasks = allTasks.filter(task => task.completed);
+            taskList.innerHTML = "";
+            taskContainer.style.display = "block";
 
-        taskList.innerHTML = "";
-        taskContainer.style.display = "block";
+            if (completedTasks.length === 0) {
+                const noTask = document.createElement("li");
+                noTask.textContent = "No completed tasks found.";
+                noTask.style.color = "#555";
+                taskList.appendChild(noTask);
+            } else {
+                completedTasks.forEach((task, index) => {
+                    const li = document.createElement("li");
 
-        if (completedTasks.length === 0) {
-            const noTask = document.createElement("li");
-            noTask.textContent = "No completed tasks found.";
-            noTask.style.color = "#555";
-            taskList.appendChild(noTask);
-            return;
+                    const taskText = document.createElement("span");
+                    taskText.textContent = task.text;
+                    taskText.classList.add("task-text");
+
+                    const priorityBox = document.createElement("span");
+                    priorityBox.textContent = task.priority;
+                    priorityBox.classList.add("priority-box", `priority-${task.priority}`);
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.checked = task.completed;
+                    checkbox.classList.add("task-checkbox");
+                    checkbox.addEventListener("change", () => {
+                        allTasks[index].completed = checkbox.checked;
+                        saveTasksToLocalStorage();
+                    });
+
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "✖";
+                    deleteBtn.classList.add("remove-btn");
+                    deleteBtn.addEventListener("click", () => {
+                        allTasks.splice(index, 1);
+                        saveTasksToLocalStorage();
+                        taskContainer.style.display = "none";
+                        currentView = "none";
+                    });
+
+                    const contentDiv = document.createElement("div");
+                    contentDiv.classList.add("task-content");
+                    contentDiv.appendChild(checkbox);
+                    contentDiv.appendChild(taskText);
+                    contentDiv.appendChild(priorityBox);
+
+                    li.appendChild(contentDiv);
+                    li.appendChild(deleteBtn);
+                    taskList.appendChild(li);
+                });
+            }
+
+            currentView = "completed";
         }
-
-        completedTasks.forEach((task, index) => {
-            const li = document.createElement("li");
-
-            const taskText = document.createElement("span");
-            taskText.textContent = task.text;
-            taskText.classList.add("task-text");
-
-            const priorityBox = document.createElement("span");
-            priorityBox.textContent = task.priority;
-            priorityBox.classList.add("priority-box", `priority-${task.priority}`);
-
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = task.completed;
-            checkbox.classList.add("task-checkbox");
-            checkbox.addEventListener("change", () => {
-                allTasks[index].completed = checkbox.checked;
-                saveTasksToLocalStorage();
-            });
-
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "✖";
-            deleteBtn.classList.add("remove-btn");
-            deleteBtn.addEventListener("click", () => {
-                allTasks.splice(index, 1);
-                saveTasksToLocalStorage();
-                taskContainer.style.display = "none";
-            });
-
-            const contentDiv = document.createElement("div");
-            contentDiv.classList.add("task-content");
-            contentDiv.appendChild(checkbox);
-            contentDiv.appendChild(taskText);
-            contentDiv.appendChild(priorityBox);
-
-            li.appendChild(contentDiv);
-            li.appendChild(deleteBtn);
-            taskList.appendChild(li);
-        });
     });
 
 
