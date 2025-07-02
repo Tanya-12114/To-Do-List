@@ -257,7 +257,7 @@ li.completed .task-text {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
-    padding: 10px;
+    padding: 1px;
     text-align: center;
     margin-bottom: 6px;
 }
