@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const addBtn = document.getElementById("add-btn");
+    const clearBtn = document.getElementById("clear-btn");
     const viewAllBtn = document.getElementById("view-all-btn");
     const completedBtn = document.getElementById("completed-btn");
     const taskInput = document.getElementById("task-input");
@@ -56,6 +57,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         showPopup("Task added!");
     });
+    clearBtn.addEventListener("click", function () {
+    taskInput.value = "";                
+    prioritySelect.selectedIndex = 0;       
+    prioritySelect.classList.remove("selected");
+});
+
 
     // View tasks
     viewAllBtn.addEventListener("click", function () {

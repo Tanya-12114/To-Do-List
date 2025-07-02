@@ -15,9 +15,10 @@
         <!-- Input + Controls -->
         <div class="input-section">
             <input type="text" id="task-input" placeholder="Add a task" />
-            <select id="priority">
+            <select id="priority" required>
+                <option value="" disabled selected hidden>Select Priority</option>
                 <option value="Low">Low</option>
-                <option value="Medium" selected>Medium</option>
+                <option value="Medium">Medium</option>
                 <option value="High">High</option>
             </select>
             <div class="button-group">
