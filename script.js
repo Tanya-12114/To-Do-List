@@ -42,26 +42,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const taskObj = {
-            id: Date.now(), // unique identifier
+            id: Date.now(),
             text: taskText,
             priority: priority,
             completed: false,
             date: selectedDate ? selectedDate.toDateString() : null
         };
 
-
-
         allTasks.push(taskObj);
-        localStorage.setItem("tasks", JSON.stringify(allTasks)); // Save to localStorage
-        taskInput.value = "";
+        localStorage.setItem("tasks", JSON.stringify(allTasks));
 
+        taskInput.value = "";
+        prioritySelect.selectedIndex = 0;
+        renderTasks();
+        taskContainer.style.display = "block";
+        currentView = "all";
         showPopup("Task added!");
+
     });
     clearBtn.addEventListener("click", function () {
-    taskInput.value = "";                
-    prioritySelect.selectedIndex = 0;       
-    prioritySelect.classList.remove("selected");
-});
+        taskInput.value = "";
+        prioritySelect.value = ""; 
+        prioritySelect.classList.remove("selected");
+    });
 
 
     // View tasks
@@ -95,6 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 completedTasks.forEach((task, index) => {
                     const li = document.createElement("li");
+                    if (task.completed) {
+                        li.classList.add("completed");
+                    }
 
                     const taskText = document.createElement("span");
                     taskText.textContent = task.text;
@@ -109,18 +115,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkbox.checked = task.completed;
                     checkbox.classList.add("task-checkbox");
                     checkbox.addEventListener("change", () => {
-                        allTasks[index].completed = checkbox.checked;
-                        saveTasksToLocalStorage();
+                        const taskIndex = allTasks.findIndex(t => t.id === task.id);
+                        if (taskIndex !== -1) {
+                            allTasks[taskIndex].completed = checkbox.checked;
+                            saveTasksToLocalStorage();
+                        }
+
                     });
 
                     const deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "✖";
                     deleteBtn.classList.add("remove-btn");
                     deleteBtn.addEventListener("click", () => {
-                        allTasks.splice(index, 1);
-                        saveTasksToLocalStorage();
-                        taskContainer.style.display = "none";
-                        currentView = "none";
+                        const taskIndex = allTasks.findIndex(t => t.id === task.id);
+                        if (taskIndex !== -1) {
+                            allTasks.splice(taskIndex, 1);
+                            saveTasksToLocalStorage();
+                            taskContainer.style.display = "none";
+                            currentView = "none";
+                        }
                     });
 
                     const contentDiv = document.createElement("div");
@@ -145,6 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         allTasks.forEach((task, index) => {
             const li = document.createElement("li");
+            if (task.completed) {
+                li.classList.add("completed");
+            }
 
             // Task text
             const taskText = document.createElement("span");
@@ -240,10 +256,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const dayDiv = document.createElement("div");
             dayDiv.textContent = day;
 
+            const dayDate = new Date(year, month, day);
             if (
-                day === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear()
+                dayDate.getDate() === today.getDate() &&
+                dayDate.getMonth() === today.getMonth() &&
+                dayDate.getFullYear() === today.getFullYear()
             ) {
                 dayDiv.classList.add("today");
             }
