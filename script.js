@@ -62,10 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     clearBtn.addEventListener("click", function () {
         taskInput.value = "";
-        prioritySelect.value = ""; 
+        prioritySelect.value = "";
         prioritySelect.classList.remove("selected");
     });
-
 
     // View tasks
     viewAllBtn.addEventListener("click", function () {
@@ -152,7 +151,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
     function renderTasks() {
         taskList.innerHTML = "";
 
@@ -171,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const prioritySpan = document.createElement("span");
             prioritySpan.textContent = task.priority;
             prioritySpan.classList.add("priority-box", `priority-${task.priority}`);
-
 
             // Checkbox
             const checkbox = document.createElement("input");
@@ -250,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const blank = document.createElement("div");
             calendar.appendChild(blank);
         }
-
         // Fill calendar with day numbers
         for (let day = 1; day <= lastDate; day++) {
             const dayDiv = document.createElement("div");
@@ -275,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ✅ Move this OUTSIDE of renderCalendar
     function highlightSelectedDate(selectedEl) {
         const previouslySelected = document.querySelector('#calendar .selected');
         if (previouslySelected) {
@@ -284,7 +279,6 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedEl.classList.add('selected');
     }
 
-    // ✅ Move this OUTSIDE of renderCalendar
     function showTasksForDate(date) {
         taskContainer.style.display = "block";
         const formattedDate = date.toDateString();
@@ -314,8 +308,6 @@ document.addEventListener("DOMContentLoaded", function () {
             prioritySpan.textContent = task.priority;
             prioritySpan.classList.add("priority-box", `priority-${task.priority}`);
 
-
-
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.checked = task.completed;
@@ -335,7 +327,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderTasks();
             });
 
-
             const contentDiv = document.createElement("div");
             contentDiv.classList.add("task-content");
             contentDiv.appendChild(checkbox);
@@ -347,8 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
             taskList.appendChild(li);
         });
     }
-
-
     // Navigation
     prevBtn.addEventListener("click", () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
@@ -359,7 +348,31 @@ document.addEventListener("DOMContentLoaded", function () {
         currentDate.setMonth(currentDate.getMonth() + 1);
         renderCalendar(currentDate);
     });
+    function checkForDueTasks() {
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
 
+        const todayStr = today.toDateString();
+        const tomorrowStr = tomorrow.toDateString();
+
+        const upcomingTasks = allTasks.filter(task =>
+            (task.date === todayStr || task.date === tomorrowStr) &&
+            !task.completed
+        );
+
+        if (upcomingTasks.length > 0) {
+            let message = "Reminder:\n";
+            upcomingTasks.forEach(task => {
+                const dueIn = task.date === todayStr ? "today" : "tomorrow";
+                message += `• "${task.text}" is due ${dueIn} (${task.priority} priority)\n`;
+            });
+
+            showPopup(message);
+        }
+    }
     // Initial render
     renderCalendar(currentDate);
+    checkForDueTasks();
+    setInterval(checkForDueTasks, 1000 * 60 * 60);
 });
