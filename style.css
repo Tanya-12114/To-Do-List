@@ -135,9 +135,7 @@ li.completed {
 }
 
 li.completed .task-text {
-    text-decoration: line-through;
     color: #000;
-    font-style: italic;
 }
 
 .task-content {
